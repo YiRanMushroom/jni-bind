@@ -39,7 +39,7 @@
 #ifndef JNI_BIND_RELEASE_
 #define JNI_BIND_RELEASE_
 
-#include <jni.h>
+#include "jni_fix.h"
 
 #include <tuple>
 #include <type_traits>

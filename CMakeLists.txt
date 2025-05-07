@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-file(READ ${CMAKE_SOURCE_DIR}/JNI_BIND_VERSION.inc JNI_BIND_VERSION)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/JNI_BIND_VERSION.inc JNI_BIND_VERSION)
 project(jni-bind VERSION "${JNI_BIND_VERSION}" LANGUAGES C CXX)
 
-include(${CMAKE_SOURCE_DIR}/cmake/add_jni_test.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/compile_flags.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/find_dependencies.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/add_jni_test.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/compile_flags.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/find_dependencies.cmake)
 
 # main target
 add_library(jni_bind INTERFACE)

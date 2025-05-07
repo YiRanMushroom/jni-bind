@@ -3,3 +3,4 @@ bazel*
 MODULE.bazel.lock
 cmake_build
 cmake_install
+/cmake-build*

@@ -2,8 +2,8 @@
 #define JNI_BIND_RELEASE_HEADER_SMOKE_TEST_H_
 
 #include <gtest/gtest.h>
-#include "jni_bind_release_for_testing.h"
 #include "jni_test.h"
+#include <jni_bind_release.h>
 
 namespace {
 
