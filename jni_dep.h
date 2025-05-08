@@ -2,7 +2,7 @@
 #define JNI_BIND_JNI_HELPER_JNI_DEP_H_
 
 // IWYU pragma: begin_exports
-#include <jni.h>
+#include "jni_fix.h"
 
 // These declarations help prevent bad clang-tidy warnings.
 using jbyte = jbyte;
