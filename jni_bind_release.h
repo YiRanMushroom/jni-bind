@@ -76,7 +76,7 @@ using TupleUnroller_t =
                            TupleType>::template TypeHelperStruct<void>::type;
 
 template <typename Func, typename TupleType>
-static constexpr auto TupleUnroller_v =
+constexpr auto TupleUnroller_v =
     TupleUnroller<Func, TupleType>::template ValueHelperStruct<void>::value;
 
 // Takes a variadic pack and injects it inside another type.
@@ -131,7 +131,7 @@ template <typename Func, typename... Ts>
 using Unwrap_t = typename Unwrap<Func>::template type<Ts...>;
 
 template <typename Func, typename... Ts>
-static constexpr auto Unwrap_v = Unwrap_t<Func, Ts...>::value;
+constexpr auto Unwrap_v = Unwrap_t<Func, Ts...>::value;
 
 }  // namespace jni::metaprogramming
 
@@ -286,7 +286,7 @@ template <typename Operation, typename TupleOfTs>
 using ReduceAsPack_t = TupleUnroller_t<Reduce<Operation>, TupleOfTs>;
 
 template <typename Operation, typename TupleOfTs>
-static constexpr auto ReduceAsPack_v =
+constexpr auto ReduceAsPack_v =
     TupleUnroller_t<Reduce<Operation>, TupleOfTs>::val;
 
 }  // namespace jni::metaprogramming
@@ -354,13 +354,13 @@ template <typename Func, typename... Ts>
 using Any_t = typename Any<Func>::template type<Ts...>;
 
 template <typename Func, typename... Ts>
-static constexpr bool Any_v = Any_t<Func, Ts...>::value;
+constexpr bool Any_v = Any_t<Func, Ts...>::value;
 
 template <typename Func, typename Ts>
 using Any_Tup = TupleUnroller_t<Any<Func>, Ts>;
 
 template <typename Func, typename Ts>
-static constexpr bool Any_Tup_v = TupleUnroller_t<Any<Func>, Ts>::value;
+constexpr bool Any_Tup_v = TupleUnroller_t<Any<Func>, Ts>::value;
 
 }  // namespace jni::metaprogramming
 
@@ -405,13 +405,13 @@ template <typename SoughtType, typename... Ts>
 using Contains_t = Invoke_t<Any<Same<SoughtType>>, Ts...>;
 
 template <typename SoughtType, typename... Tup>
-static constexpr bool Contains_v = Contains_t<SoughtType, Tup...>::value;
+constexpr bool Contains_v = Contains_t<SoughtType, Tup...>::value;
 
 template <typename SoughtType, typename Tup>
 using TupContains_t = TupleUnroller_t<Any<Same<SoughtType>>, Tup>;
 
 template <typename SoughtType, typename Tup>
-static constexpr bool TupContains_v = TupContains_t<SoughtType, Tup>::value;
+constexpr bool TupContains_v = TupContains_t<SoughtType, Tup>::value;
 
 // Constexpr value implementation.
 template <typename SoughtType, typename... Ts>
@@ -710,7 +710,7 @@ struct AllUnique<T, Ts...> {
 };
 
 template <typename... Ts>
-static constexpr bool AllUnique_v = AllUnique<Ts...>::value;
+constexpr bool AllUnique_v = AllUnique<Ts...>::value;
 
 // Constexpr value implementation.
 constexpr bool AllUniqueValues(...) { return true; }
@@ -975,21 +975,21 @@ struct FindIdxOfVal {
 };
 
 template <typename Comparator, typename... Ts>
-static constexpr std::size_t FindIdxOfValWithComparator_idx =
+constexpr std::size_t FindIdxOfValWithComparator_idx =
     FindIdxOfVal<Comparator>::template value<Ts...>;
 
 // Convenience alias with default of std::is_same Comparator (typical use case).
 template <typename Query, typename... Ts>
-static constexpr std::size_t FindIdxOfVal_idx =
+constexpr std::size_t FindIdxOfVal_idx =
     FindIdxOfValWithComparator_idx<Same<Query>, Ts...>;
 
 template <typename Comparator, typename TupType>
-static constexpr std::size_t FindIdxOfValInTupWithComparator_idx =
+constexpr std::size_t FindIdxOfValInTupWithComparator_idx =
     TupleUnroller_v<FindIdxOfVal<Comparator>, TupType>;
 
 // Convenience alias with default of std::is_same Comparator (typical use case).
 template <typename Query, typename TupType>
-static constexpr std::size_t FindIdxOfValInTup_idx =
+constexpr std::size_t FindIdxOfValInTup_idx =
     FindIdxOfValInTupWithComparator_idx<Same<Query>, TupType>;
 
 }  // namespace jni::metaprogramming
@@ -1614,9 +1614,9 @@ struct RootObject {
   constexpr RootObject() = default;
 };
 
-static constexpr RootObject kObject{};
+constexpr RootObject kObject{};
 
-static constexpr struct NoClass {
+constexpr struct NoClass {
   // For compatability reasons, this must be defined (not default) because some
   // compilers will complain about defaulted constructors being deleted.
   constexpr NoClass() {}
@@ -1754,7 +1754,7 @@ template <typename T>
 struct ArrayTag {};
 
 template <typename T>
-static constexpr bool kIsArrayType =
+constexpr bool kIsArrayType =
     std::is_base_of_v<ArrayTag<jbyteArray>, T> ||
     std::is_base_of_v<ArrayTag<jcharArray>, T> ||
     std::is_base_of_v<ArrayTag<jshortArray>, T> ||
@@ -1891,7 +1891,7 @@ struct Self {};
 
 namespace jni {
 
-static constexpr std::size_t kNoIdx{std::numeric_limits<std::size_t>::max()};
+constexpr std::size_t kNoIdx{std::numeric_limits<std::size_t>::max()};
 
 }  // namespace jni
 
@@ -2144,7 +2144,7 @@ template <typename T>
 using ArrayComparisonHelper_t = typename ArrayComparisonHelper<T>::type;
 
 template <typename T1, typename T2>
-static constexpr bool IsArrayComparable() {
+constexpr bool IsArrayComparable() {
   return std::is_base_of_v<ArrayBase, T1> && std::is_base_of_v<ArrayBase, T2>;
 };
 
@@ -2400,8 +2400,8 @@ SupportedClassSet(Classes...) -> SupportedClassSet<Classes...>;
 
 namespace jni {
 
-static constexpr std::size_t kDefaultClassLoaderIdx = 0;
-static constexpr std::size_t kClassNotInLoaderSetIdx =
+constexpr std::size_t kDefaultClassLoaderIdx = 0;
+constexpr std::size_t kClassNotInLoaderSetIdx =
     metaprogramming::kNegativeOne;
 
 // Class loader that can supply any class (to be used when none is specified).
@@ -2487,14 +2487,14 @@ constexpr bool operator!=(const NullClassLoader& lhs, const T& rhs) {
   return !(lhs == rhs);
 }
 
-static constexpr NullClassLoader kNullClassLoader;
-static constexpr DefaultClassLoader kDefaultClassLoader;
+constexpr NullClassLoader kNullClassLoader;
+constexpr DefaultClassLoader kDefaultClassLoader;
 
 // DO NOT USE: This obviates a compiler bug for value based enablement on ctor.
-static constexpr auto kShadowNullClassLoader = kNullClassLoader;
+constexpr auto kShadowNullClassLoader = kNullClassLoader;
 
 // DO NOT USE: This obviates a compiler bug for value based enablement on ctor.
-static constexpr auto kShadowDefaultClassLoader = kDefaultClassLoader;
+constexpr auto kShadowDefaultClassLoader = kDefaultClassLoader;
 
 }  // namespace jni
 
@@ -2522,7 +2522,7 @@ inline constexpr Class kJavaLangClassLoader{
   Method{"toString", Return{jstring{}}, Params<>{}},
 };
 
-static constexpr Class kJavaLangString{
+constexpr Class kJavaLangString{
   "java/lang/String",
 
   Constructor{jstring{}},
@@ -2569,7 +2569,7 @@ struct StringConcatenate {
 };
 
 template <std::string_view const&... Vs>
-static constexpr auto StringConcatenate_v = StringConcatenate::value<Vs...>;
+constexpr auto StringConcatenate_v = StringConcatenate::value<Vs...>;
 
 }  // namespace jni::metaprogramming
 
@@ -2713,7 +2713,7 @@ template <template <typename> class Container, typename T>
 using Detect_t = typename Detect<Container>::template type<T>;
 
 template <template <typename> class Container, typename T>
-static constexpr bool Detect_v = Detect<Container>::template val<T>;
+constexpr bool Detect_v = Detect<Container>::template val<T>;
 
 }  // namespace jni::metaprogramming
 
@@ -3107,7 +3107,7 @@ struct RepeatString<0> {
 };
 
 template <std::size_t repeat_cnt, const std::string_view& val_to_repeat>
-static constexpr auto RepeatString_v{
+constexpr auto RepeatString_v{
     RepeatString<repeat_cnt>::template val<val_to_repeat>};
 
 }  // namespace jni::metaprogramming
@@ -3513,7 +3513,7 @@ struct IsConvertibleKey {
 };
 
 template <typename Query, typename T>
-static constexpr bool IsConvertibleKey_v =
+constexpr bool IsConvertibleKey_v =
     IsConvertibleKey<Query>::template value<T>;
 
 }  // namespace jni
@@ -3610,19 +3610,19 @@ struct ValsEqualDiminished {
 };
 
 template <typename T1, typename T2>
-static constexpr bool ValsEqualDiminished_v =
+constexpr bool ValsEqualDiminished_v =
     ValsEqualDiminished<T1>::template val<T2>;
 
 template <auto V1, auto V2>
-static constexpr bool ValsEqualDiminished_v_v =
+constexpr bool ValsEqualDiminished_v_v =
     ValsEqualDiminished<Vals<V1>>::template val<Vals<V2>>;
 
 template <auto& V1, auto& V2>
-static constexpr bool ValsEqualDiminished_r_v =
+constexpr bool ValsEqualDiminished_r_v =
     ValsEqualDiminished<ValsRef<V1>>::template val<ValsRef<V2>>;
 
 template <const auto& V1, const auto& V2>
-static constexpr bool ValsEqualDiminished_cr_v =
+constexpr bool ValsEqualDiminished_cr_v =
     ValsEqualDiminished<ValsConstRef<V1>>::template val<ValsConstRef<V2>>;
 
 }  // namespace jni::metaprogramming
@@ -3650,7 +3650,7 @@ struct Replace {
 };
 
 template <const std::string_view& str, char sought_char, char new_char>
-static constexpr auto Replace_v =
+constexpr auto Replace_v =
     Replace<sought_char, new_char>::template val<str>;
 
 }  // namespace jni::metaprogramming
@@ -3925,9 +3925,9 @@ struct NameOrNothing<val_, std::void_t<decltype(val_.name_)>> {
 };
 
 template <const auto& val>
-static constexpr auto NameOrNothing_v = NameOrNothing<val>::val;
+constexpr auto NameOrNothing_v = NameOrNothing<val>::val;
 
-static constexpr std::string_view kInit{"<init>"};
+constexpr std::string_view kInit{"<init>"};
 
 }  // namespace jni
 
@@ -3966,7 +3966,7 @@ struct IsLoadedBy<LoadedBy<ClassLoaderT, ClassT>> {
 };
 
 template <typename T>
-static constexpr bool IsLoadedBy_v = IsLoadedBy<T>::val;
+constexpr bool IsLoadedBy_v = IsLoadedBy<T>::val;
 
 template <typename T>
 constexpr auto StripClassFromLoadedBy(T val) {
@@ -4188,7 +4188,7 @@ struct Signature<
 };
 
 template <typename T>
-static constexpr auto Signature_v = Signature<T>::val;
+constexpr auto Signature_v = Signature<T>::val;
 
 }  // namespace jni
 
@@ -5084,7 +5084,7 @@ namespace jni {
 // Only applicable for Jvms not fully specified (i.e. default classloader).
 // See JvmRef::~JvmRef.
 template <typename T>
-static std::vector<metaprogramming::DoubleLockedValue<T>*>& DefaultRefs() {
+std::vector<metaprogramming::DoubleLockedValue<T>*>& DefaultRefs() {
   static auto* ret_val =
       new std::vector<metaprogramming::DoubleLockedValue<T>*>{};
   return *ret_val;
@@ -5674,7 +5674,7 @@ struct Configuration {
   bool release_method_ids_on_teardown_ = false;
 };
 
-static inline Configuration kConfiguration = {};
+inline Configuration kConfiguration = {};
 
 }  // namespace jni
 
@@ -5724,12 +5724,12 @@ using Unfurl_t = typename Unfurl<Container, Is>::template type<Ts...>;
 
 template <std::size_t Is, template <std::size_t, typename...> class Container,
           typename... Ts>
-static constexpr bool UnfurlConjunction_v =
+constexpr bool UnfurlConjunction_v =
     Unfurl<Container, Is, true>::template val<Ts...>;
 
 template <std::size_t Is, template <std::size_t, typename...> class Container,
           typename... Ts>
-static constexpr bool UnfurlDisjunction_v =
+constexpr bool UnfurlDisjunction_v =
     Unfurl<Container, Is, false>::template val<Ts...>;
 
 }  // namespace jni::metaprogramming
@@ -5826,7 +5826,7 @@ template <typename T1, typename T2>
 using Max_t = typename Max::type<T1, T2>;
 
 template <typename T1, typename T2>
-static constexpr auto Max_v = Max_t<T1, T2>::val;
+constexpr auto Max_v = Max_t<T1, T2>::val;
 
 struct Min {
   template <typename T1, typename T2>
@@ -5845,7 +5845,7 @@ template <typename T1, typename T2>
 using Min_t = typename Min::type<T1, T2>;
 
 template <typename T1, typename T2>
-static constexpr auto Min_v = Min_t<T1, T2>::val;
+constexpr auto Min_v = Min_t<T1, T2>::val;
 
 }  // namespace jni::metaprogramming
 
@@ -6413,7 +6413,7 @@ struct StringContains {
 };
 
 template <const std::string_view& str, char sought>
-static constexpr bool StringContains_v =
+constexpr bool StringContains_v =
     StringContains<sought>::template val<str>;
 
 }  // namespace jni::metaprogramming
@@ -6628,7 +6628,7 @@ struct PackDiscrimator {
 };
 
 template <typename T>
-static constexpr PackType PackDiscriminator_e =
+constexpr PackType PackDiscriminator_e =
     PackDiscrimator::template val<T>;
 
 // Metafunction to forward a containerized pack to a compatible container.
@@ -6947,7 +6947,7 @@ struct OverloadSelector {
 namespace jni {
 
 // See JvmRef::~JvmRef.
-static inline auto& GetDefaultLoadedFieldList() {
+inline auto& GetDefaultLoadedFieldList() {
   static auto* ret_val =
       new std::vector<metaprogramming::DoubleLockedValue<jfieldID>*>{};
   return *ret_val;
@@ -7039,7 +7039,7 @@ class FieldRef {
 
 namespace jni {
 
-static inline jclass LoadClassFromObject(const char* name, jobject object_ref);
+inline jclass LoadClassFromObject(const char* name, jobject object_ref);
 
 // Represents a a jclass instance for a specific class. 4 flavours exist:
 //   1) Default JVM, default class loader.
@@ -7185,7 +7185,7 @@ template <typename T1>
 struct DeepEqualDiminished;
 
 template <typename T1, typename T2>
-static constexpr bool DeepEqualDiminished_v =
+constexpr bool DeepEqualDiminished_v =
     DeepEqualDiminished<T1>::template val<T2>;
 
 template <typename Container1>
@@ -9016,7 +9016,7 @@ class GlobalClassLoader
 
 namespace jni {
 
-static constexpr Class kJavaLangThrowable{
+constexpr Class kJavaLangThrowable{
     "java/lang/Throwable",
     Constructor{},
     Constructor<jstring>{},
@@ -10407,7 +10407,7 @@ inline constexpr Class kJavaUtilList{
 
 namespace jni {
 
-static constexpr ::jni::Class kJavaUtilArrayList{
+constexpr ::jni::Class kJavaUtilArrayList{
     "java/util/ArrayList",
     Constructor{},
     Constructor{kJavaLangObject},
@@ -10420,7 +10420,7 @@ static constexpr ::jni::Class kJavaUtilArrayList{
 
 namespace jni {
 
-static constexpr Class kJavaLangException{
+constexpr Class kJavaLangException{
     "java/lang/Exception",
     Constructor{},
     Constructor<jstring>{},
