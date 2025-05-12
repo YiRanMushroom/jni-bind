@@ -2744,6 +2744,7 @@ struct LifecycleLocalBase {
 
 #ifdef DRY_RUN
 #else
+    // std::cout << "Deleting local ref: " << object << std::endl;
     JniEnv::GetEnv()->DeleteLocalRef(object);
 #endif  // DRY_RUN
   }
@@ -3441,7 +3442,10 @@ class RefBase : public RefBaseBase {
             typename ViableSpan>
   friend struct EntryBase;
 
-  RefBase(StorageType object) : object_ref_(object) {}
+  RefBase(StorageType object) : object_ref_(object) {
+    // std::cout << "Storing object: " << object_ref_ << std::endl;
+    // std::cout << "Stored Type is :" << typeid(object_ref_).name() << std::endl;
+  }
 
   RefBase(const RefBase& rhs) = delete;
 
@@ -3666,7 +3670,12 @@ struct LifecycleHelper<jstring, LifecycleType::LOCAL>
 #ifdef DRY_RUN
     return Fake<jstring>();
 #else
-    return jni::JniEnv::GetEnv()->NewStringUTF(chars);
+    auto ref = jni::JniEnv::GetEnv()->NewStringUTF(chars);
+
+    // std::cout << "NewStringUTF: " << (void*) static_cast<jobject>(ref)
+    //           << std::endl;
+
+    return ref;
 #endif  // DRY_RUN
   }
 };
@@ -4514,7 +4523,15 @@ struct LifecycleHelper<jobject, LifecycleType::LOCAL>
 #ifdef DRY_RUN
     return Fake<jobject>();
 #else
-    return JniEnv::GetEnv()->NewObject(clazz, ctor_method, ctor_args...);
+    auto obj = JniEnv::GetEnv()->NewObject(clazz, ctor_method, ctor_args...);
+
+    ([]<typename T>(T obj){
+      if constexpr (std::is_same_v<T, jstring>) {
+        JniEnv::GetEnv()->DeleteLocalRef(obj);
+      }
+    }(ctor_args) , ...);
+
+    return obj;
 #endif  // DRY_RUN
   }
 };
