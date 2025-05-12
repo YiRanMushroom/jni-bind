@@ -2744,7 +2744,6 @@ struct LifecycleLocalBase {
 
 #ifdef DRY_RUN
 #else
-    // std::cout << "Deleting local ref: " << object << std::endl;
     JniEnv::GetEnv()->DeleteLocalRef(object);
 #endif  // DRY_RUN
   }
@@ -4525,7 +4524,7 @@ struct LifecycleHelper<jobject, LifecycleType::LOCAL>
 #else
     auto obj = JniEnv::GetEnv()->NewObject(clazz, ctor_method, ctor_args...);
 
-    ([]<typename T>(T obj){
+    ([]<typename T>(const T& obj){
       if constexpr (std::is_same_v<T, jstring>) {
         JniEnv::GetEnv()->DeleteLocalRef(obj);
       }
