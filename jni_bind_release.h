@@ -4528,7 +4528,7 @@ struct LifecycleHelper<jobject, LifecycleType::LOCAL>
       if constexpr (std::is_same_v<T, jstring>) {
         JniEnv::GetEnv()->DeleteLocalRef(obj);
       }
-    }(ctor_args) , ...);
+    }(ctor_args), ...);
 
     return obj;
 #endif  // DRY_RUN
