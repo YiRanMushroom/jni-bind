@@ -4613,6 +4613,57 @@ struct InvokeHelper<jboolean, 0, false> {
 };
 
 template <>
+struct InvokeHelper<jbyte, 0, false> {
+    template <typename... Ts>
+    static jboolean Invoke(jobject object, jclass clazz, jmethodID method_id,
+                           Ts&&... ts) {
+      Trace(metaprogramming::LambdaToStr(STR("CallByteMethod")), object, clazz,
+            method_id, ts...);
+
+#ifdef DRY_RUN
+      return Fake<jboolean>();
+#else
+      return jni::JniEnv::GetEnv()->CallByteMethod(object, method_id,
+                                                         std::forward<Ts>(ts)...);
+#endif  // DRY_RUN
+    }
+  };
+
+template <>
+struct InvokeHelper<jchar, 0, false> {
+    template <typename... Ts>
+    static jboolean Invoke(jobject object, jclass clazz, jmethodID method_id,
+                           Ts&&... ts) {
+      Trace(metaprogramming::LambdaToStr(STR("CallCharMethod")), object, clazz,
+            method_id, ts...);
+
+#ifdef DRY_RUN
+      return Fake<jboolean>();
+#else
+      return jni::JniEnv::GetEnv()->CallCharMethod(
+        object, method_id, std::forward<Ts>(ts)...);
+#endif  // DRY_RUN
+    }
+  };
+
+  template <>
+  struct InvokeHelper<jshort, 0, false> {
+    template <typename... Ts>
+    static jboolean Invoke(jobject object, jclass clazz, jmethodID method_id,
+                           Ts&&... ts) {
+      Trace(metaprogramming::LambdaToStr(STR("CallShortMethod")), object, clazz,
+            method_id, ts...);
+
+#ifdef DRY_RUN
+      return Fake<jboolean>();
+#else
+      return jni::JniEnv::GetEnv()->CallShortMethod(
+          object, method_id, std::forward<Ts>(ts)...);
+#endif  // DRY_RUN
+    }
+  };
+
+template <>
 struct InvokeHelper<jint, 0, false> {
   template <typename... Ts>
   static jint Invoke(jobject object, jclass clazz, jmethodID method_id,
